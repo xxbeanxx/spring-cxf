@@ -25,6 +25,19 @@
 
 	<jaxws:client id="weatherClient" bus="asyncBus"
 			address="http://www.webservicex.com/globalweather.asmx"
-			serviceClass="net.webservicex.GlobalWeatherSoap"/>
+			serviceClass="net.webservicex.GlobalWeatherSoap">
+	
+		<jaxws:outInterceptors>
+			<bean class="com.github.xxbeanxx.cxf.interceptor.security.NTLMAuthenticationInterceptor">
+				<constructor-arg name="ntCredentials">
+					<bean class="org.apache.http.auth.NTCredentials">
+						<constructor-arg value="DOMAIN\USER:PASSWORD"/>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</jaxws:outInterceptors>
+	
+			
+	</jaxws:client>
 
 </beans>
