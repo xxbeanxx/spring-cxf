@@ -11,7 +11,6 @@
 		<cxf.version>3.1.4</cxf.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<spring.version>4.2.3.RELEASE</spring.version>
-		<springws.version>2.1.4.RELEASE</springws.version>
 	</properties>
 
 	<dependencies>
@@ -53,16 +52,6 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
-		<!-- =============================================================== -->
-		<!--         Spring WS                                               -->
-		<!-- =============================================================== -->
-
-		<dependency>
-			<groupId>org.springframework.ws</groupId>
-			<artifactId>spring-ws-core</artifactId>
-			<version>${springws.version}</version>
-		</dependency>		
 
 		<!-- =============================================================== -->
 		<!--         SLF4j                                                   -->

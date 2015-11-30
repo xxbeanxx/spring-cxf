@@ -4,40 +4,53 @@
 		xmlns:cxf="http://cxf.apache.org/core"
 		xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
 		xmlns:jaxws="http://cxf.apache.org/jaxws"
-		xmlns:security="http://cxf.apache.org/configuration/security"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="
 				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 				http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
-				http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
 				http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
-				http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+				http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
 
+	<!-- 
+		~
+		~ create an asynchronous-only bus for NTLM requests
+		~
+	-->
+	 
 	<cxf:bus name="asyncBus">
 		<cxf:properties>
 			<entry key="use.async.http.conduit" value="true"/>
 		</cxf:properties>
 	</cxf:bus>
                              
+	<!-- 
+		~
+		~ configure conduit for NTLM request
+		~
+	-->
+
 	<http-conf:conduit name="{http://www.webserviceX.NET}GlobalWeatherSoapPort.http-conduit">
-		<http-conf:client AllowChunking="false" Connection="Keep-Alive"/>
+		<http-conf:client AllowChunking="false" AutoRedirect="true" Connection="Keep-Alive"/>
 	</http-conf:conduit>
+
+	<!-- 
+		~
+		~ create service stub
+		~
+	-->
 
 	<jaxws:client id="weatherClient" bus="asyncBus"
 			address="http://www.webservicex.com/globalweather.asmx"
 			serviceClass="net.webservicex.GlobalWeatherSoap">
 	
-		<jaxws:outInterceptors>
-			<bean class="com.github.xxbeanxx.cxf.interceptor.security.NTLMAuthenticationInterceptor">
-				<constructor-arg name="ntCredentials">
-					<bean class="org.apache.http.auth.NTCredentials">
-						<constructor-arg value="DOMAIN\USER:PASSWORD"/>
-					</bean>
-				</constructor-arg>
-			</bean>
-		</jaxws:outInterceptors>
-	
-			
+		<jaxws:properties>
+			<entry key="org.apache.http.auth.Credentials">
+				<bean class="org.apache.http.auth.NTCredentials">
+					<constructor-arg value="DOMAIN/USER:PASSWORD"/>
+				</bean>
+			</entry>
+		</jaxws:properties>
+
 	</jaxws:client>
 
 </beans>
