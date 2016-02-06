@@ -8,7 +8,8 @@
 	<name>Spring and Apache CXF (w/ async conduit)</name>
 
 	<properties>
-		<cxf.version>3.1.4</cxf.version>
+ 		<cxf.version>3.1.4</cxf.version>
+		<java.version>1.7</java.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<spring.version>4.2.3.RELEASE</spring.version>
 	</properties>
@@ -31,6 +32,12 @@
 			<version>${cxf.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		
 		<!-- =============================================================== -->
 		<!--         Spring 4.x                                              -->
 		<!-- =============================================================== -->
@@ -50,6 +57,12 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
@@ -80,6 +93,16 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<!-- run with mvn generate-sources -->
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-codegen-plugin</artifactId>
@@ -89,7 +112,7 @@
 						<id>generate-sources</id>
 						<phase>generate-sources</phase>
 						<configuration>
-							<sourceRoot>${basedir}/src/main/generated/cxf</sourceRoot>
+							<sourceRoot>${basedir}/target/generated/cxf</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
 									<wsdl>${basedir}/src/main/resources/globalweather.wsdl</wsdl>
@@ -105,7 +128,37 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-xjc-plugin</artifactId>
+				<version>3.0.5</version>
+				<configuration>
+					<extensions>
+						<extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:3.0.5</extension>
+					</extensions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xsdtojava</goal>
+						</goals>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated/cxf</sourceRoot>
+							<xsdOptions>
+								<xsdOption>
+									<xsd>${basedir}/src/main/resources/schemas/Request.xsd</xsd>
+								</xsdOption>
+							</xsdOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
 	</build>
 
+	<packaging>war</packaging>
 </project>

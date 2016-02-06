@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Request" xmlns:tns="http://www.example.org/Request" elementFormDefault="qualified">
+
+    <complexType name="RequestType">
+    	<sequence>
+    		<element name="message" type="string"></element>
+    	</sequence>
+    </complexType>
+
+</schema>
