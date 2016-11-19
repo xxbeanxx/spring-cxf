@@ -4,6 +4,7 @@
 	<groupId>com.github.xxbeanxx.cxf</groupId>
 	<artifactId>spring-cxf</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 
 	<name>Spring and Apache CXF (w/ async conduit)</name>
 
@@ -106,25 +107,21 @@
 				<!-- run with mvn generate-sources -->
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-codegen-plugin</artifactId>
-				<version>${cxf.version}</version>
+				<version>3.1.5</version>
 				<executions>
 					<execution>
 						<id>generate-sources</id>
 						<phase>generate-sources</phase>
-						<configuration>
-							<sourceRoot>${basedir}/target/generated/cxf</sourceRoot>
-							<wsdlOptions>
-								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/globalweather.wsdl</wsdl>
-									<extraargs>
-										<extraarg>-verbose</extraarg>
-									</extraargs>
-								</wsdlOption>
-							</wsdlOptions>
-						</configuration>
 						<goals>
 							<goal>wsdl2java</goal>
 						</goals>
+						<configuration>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/globalweather.wsdl</wsdl>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -146,7 +143,6 @@
 							<goal>xsdtojava</goal>
 						</goals>
 						<configuration>
-							<sourceRoot>${basedir}/target/generated/cxf</sourceRoot>
 							<xsdOptions>
 								<xsdOption>
 									<xsd>${basedir}/src/main/resources/schemas/Request.xsd</xsd>
@@ -157,8 +153,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-
 	</build>
 
-	<packaging>war</packaging>
 </project>

@@ -7,8 +7,6 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
-import org.example.request.RequestType;
-
 /**
  * @author Greg Baker
  */
@@ -16,7 +14,7 @@ import org.example.request.RequestType;
 public class RequestServiceImpl implements RequestService {
 
 	@Override
-	public String handleRequest(RequestType requestType) {
+	public String handleRequest() {
 		return "SUCCESS";
 	}
 
